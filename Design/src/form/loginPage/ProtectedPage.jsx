@@ -1,78 +1,50 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
-const ProtectedPage = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
+const ProtectedPage = ({ children }) => {
   const navigate = useNavigate();
-  const {setUsername} = useContext(UserContext)
+  const { setUsername, username } = useContext(UserContext);
+
   useEffect(() => {
-    const fetchProtectedData = async () => {
+    const verifyToken = async () => {
       const token = localStorage.getItem("access_token");
 
-      // Redirect if no token is present
+      // Redirect if no token is found
       if (!token) {
-        setError("No token found. Redirecting to login...");
-        setLoading(false);
-        setTimeout(() => navigate("/login"), 2000); // Delayed navigation for better UX
+        navigate("/login");
         return;
       }
 
       try {
-        // Attempt to fetch protected data
+        // Validate the token by calling a protected endpoint
         const response = await axios.get(
           "http://127.0.0.1:8000/auth/protected-endpoint/",
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
 
-        setData(response.data.message);
-        setUsername(response.data.message)
+        // Assuming the response contains the username
+        setUsername(response.data.username ); 
       } catch (error) {
-        if (error.response) {
-          // Handle HTTP error statuses
-          if (error.response.status === 401) {
-            setError("Unauthorized access. Redirecting to login...");
-            localStorage.removeItem("access_token"); // Clear token
-            setTimeout(() => navigate("/login"), 2000); // Delayed navigation
-          } else {
-            setError("Server error. Please try again later.");
-          }
-        } else {
-          setError("Network error. Check your connection and try again.");
-        }
-      } finally {
-        setLoading(false);
+        console.error("Error verifying token:", error);
+        localStorage.removeItem("access_token"); // Remove invalid token
+        navigate("/login");
       }
     };
 
-    fetchProtectedData();
-  }, [navigate]);
+    verifyToken();
+  }, [navigate, setUsername]);
 
-  return (
-    <div className="protected-page">
-      {loading ? (
-        <div className="loading">
-          <p>Loading...</p>
-          {/* Optionally replace with a spinner or animation */}
-        </div>
-      ) : error ? (
-        <div className="error">
-          <p>{error}</p>
-        </div>
-      ) : (
-        <div className="content">
-          <h2>Protected Data</h2>
-          <p>{data}</p>
-        </div>
-      )}
-    </div>
-  );
+  // Redirect while waiting for verification or if username isn't set
+  if (!username) {
+    return null; // Optionally, render a loader or placeholder
+  }
+
+  // Render protected content
+  return <>{children}</>;
 };
 
 export default ProtectedPage;

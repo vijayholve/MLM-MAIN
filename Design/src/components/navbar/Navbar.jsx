@@ -179,7 +179,7 @@ const Navbar = () => {
                   <Nav_link
                     title={"MLM user"}
                     link="/all-users"
-                    icon="bi bi-people"
+                    icon="bi bi-diagram-3"
                   />
                 </li>
                 <li className="nav-item">
@@ -193,7 +193,7 @@ const Navbar = () => {
                   <Nav_link
                     title={"Plans"}
                     link={"/plans"}
-                    icon={"bi bi-check-circle"}
+                    icon={"bi bi-bookmark-plus"}
                   />
                 </li>
                 <li className="nav-item border-top mt-auto pt-2">
