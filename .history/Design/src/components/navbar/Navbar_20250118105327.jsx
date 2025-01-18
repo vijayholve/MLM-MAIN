@@ -137,13 +137,26 @@ const Navbar = () => {
             <div className="position-sticky py-4 px-3 sidebar-sticky">
               <ul className="nav flex-column h-100">
                 <li className="nav-item">
-                  <Nav_link title="Dashboard" link="/dashboard" icon="bi-info-circle" />
-                </li>
-                <li className="nav-item">
-                  
+                  {/* <NavLink className={(e) =>
+                      e.isActive ? "nav-link active" : "nav-link"
+                    } to="/">
+                    <i className="bi-house-fill me-2"></i>
+                    Home
+                  </NavLink> */}
                   <Nav_link title="Home" link="/" icon="bi-house" />
                 </li>
                 <li className="nav-item">
+                  {/* <NavLink className="nav-link" to="/about">
+                    <i className="bi-info-circle me-2"></i>
+                    About
+                  </NavLink> */}
+                  <Nav_link title="about" link="/dashboard" icon="bi-info-circle" />
+                </li>
+                <li className="nav-item">
+                  {/* <NavLink className="nav-link" to="/register-form">
+                    <i className="bi-info-circle me-2"></i>
+                    Register Form
+                  </NavLink> */}
                   <Nav_link
                     title="Register Form"
                     link="/register-form"

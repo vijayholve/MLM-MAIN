@@ -144,6 +144,10 @@ const Navbar = () => {
                   <Nav_link title="Home" link="/" icon="bi-house" />
                 </li>
                 <li className="nav-item">
+                  {/* <NavLink className="nav-link" to="/register-form">
+                    <i className="bi-info-circle me-2"></i>
+                    Register Form
+                  </NavLink> */}
                   <Nav_link
                     title="Register Form"
                     link="/register-form"

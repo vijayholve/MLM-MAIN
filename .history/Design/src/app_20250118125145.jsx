@@ -20,7 +20,7 @@ const App = () => {
   const [username, setUsername] = useState(null);
   
   return (
-    <SiteConfig.Provider  value={{}}>
+    <SiteConfig.Provider  value={}>
     <UserContext.Provider value={{ username, setUsername, baseURL }}>
       <Router>
         <Navbar />

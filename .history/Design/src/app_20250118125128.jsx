@@ -20,7 +20,7 @@ const App = () => {
   const [username, setUsername] = useState(null);
   
   return (
-    <SiteConfig.Provider  value={{}}>
+    <SiteConfig.Provider 
     <UserContext.Provider value={{ username, setUsername, baseURL }}>
       <Router>
         <Navbar />
@@ -87,8 +87,6 @@ const App = () => {
         </div>
       </Router>
     </UserContext.Provider>
-    </SiteConfig.Provider>
-
   );
 };
 

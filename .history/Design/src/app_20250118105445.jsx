@@ -11,16 +11,15 @@ import MainTable from "./components/table/Table";
 import CreateKyc from "./form/KycForm.jsx";
 import Plans from "./pages/Plans.jsx";
 import DashboardComponent from "./pages/Dashboard.jsx";
-import { SiteConfig } from "./components/context/SiteConfingContent.jsx";
+
 // Create the User Context
 export const UserContext = createContext();
 export const baseURL = "http://127.0.0.1:8000"; // Base URL for media files
 
 const App = () => {
   const [username, setUsername] = useState(null);
-  
+
   return (
-    <SiteConfig.Provider  value={{}}>
     <UserContext.Provider value={{ username, setUsername, baseURL }}>
       <Router>
         <Navbar />
@@ -36,19 +35,8 @@ const App = () => {
                 </ProtectedPage>
               }
             />
-            <Route path="/plans" element={
-              <ProtectedPage>
-
-                <Plans />
-              </ProtectedPage>
-              
-              } />
-            <Route path="/dashboard" element={
-              <ProtectedPage>
-
-                <DashboardComponent />
-              </ProtectedPage>
-              } />
+            <Route path="/plans" element={<Plans />} />
+            <Route path="/about" element={<DashboardComponent />} />
 
             {/* Protected Routes */}
             <Route
@@ -87,8 +75,6 @@ const App = () => {
         </div>
       </Router>
     </UserContext.Provider>
-    </SiteConfig.Provider>
-
   );
 };
 
