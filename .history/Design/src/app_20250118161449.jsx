@@ -59,6 +59,14 @@ const App = () => {
               }
             />
             <Route
+              path="/setting"
+              element={
+                <ProtectedPage>
+                  <SiteConfingContent />
+                </ProtectedPage>
+              }
+            />
+            <Route
               path="/mlm-tree/:mlmId"
               element={
                 <ProtectedPage>
