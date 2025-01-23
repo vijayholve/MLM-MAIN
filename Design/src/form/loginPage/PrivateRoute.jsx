@@ -8,15 +8,15 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
     if (token) {
       try {
-        const decoded = jwt_decode(token); // Decode the JWT token
-        const isExpired = decoded.exp * 1000 < Date.now(); // Check if the token is expired
+        const decoded = jwt_decode(token); 
+        const isExpired = decoded.exp * 1000 < Date.now(); 
         return !isExpired;
       } catch (error) {
         console.error("Error decoding token:", error);
-        return false; // Token is invalid or expired
+        return false;
       }
     }
-    return false; // No token present
+    return false;
   };
 
   return (
