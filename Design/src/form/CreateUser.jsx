@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
@@ -8,9 +8,11 @@ import Select from "@mui/material/Select";
 import { Button } from "@mui/material";
 
 import MenuItem from "@mui/material/MenuItem";
+import { UserContext } from "../App";
 const CreateUser = () => {
   const [submitblock, setsubmitblock] = useState(false);
   const [openmessage, setopenmessage] = useState(false);
+  const {baseURL} = useContext(UserContext)
   const [formData, setFormData] = useState({
     sponsor_code: "",
     position: "",
@@ -40,7 +42,7 @@ const CreateUser = () => {
     try {
       console.log("data is ",formData)
       const response = await axios.post(
-        "http://127.0.0.1:8000/auth/register/",
+       `${baseURL}/auth/register/`,
         formData
       );
       setmessage({

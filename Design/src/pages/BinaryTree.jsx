@@ -80,10 +80,8 @@ const MLMTree = () => {
 
   const cleanTreeData = (data, level = 1) => {
     if (Array.isArray(data)) data = data[0];
-  
-    // Base case: Stop recursion when height exceeds 3
     if (level > 3) {
-      return null; // Cut off nodes beyond height 3
+      return null; 
     }
   
     // Ensure the node has children
@@ -98,8 +96,7 @@ const MLMTree = () => {
     data.children = [
       cleanTreeData(leftChild, level + 1),
       cleanTreeData(rightChild, level + 1),
-    ].filter((child) => child !== null); // Filter out null nodes
-  
+    ].filter((child) => child !== null); 
     return data;
   };
   

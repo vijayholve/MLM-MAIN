@@ -15,6 +15,7 @@ import {
   FormControl,
   FormLabel,
 } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 
 const LoginPageForm = () => {
   const [localUsername, setLocalUsername] = useState("");
@@ -24,36 +25,41 @@ const LoginPageForm = () => {
   const [openMessage, setOpenMessage] = useState(false);
   const [submitBlock,setsubmitBlock]=useState(false)
   const navigate = useNavigate();
-  const { setUsername } = useContext(UserContext);
+  const { setUsername ,baseURL } = useContext(UserContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setsubmitBlock(true)
+    setsubmitBlock(true);
     try {
-      const response = await axios.post("http://127.0.0.1:8000/auth/api/token/", {
+      const response = await axios.post(`${baseURL}/auth/api/token/`, {
         username: localUsername,
         password,
       });
-
+  
+      localStorage.setItem("token", response.data.token);
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
-
+  
       const decodedToken = jwt_decode(response.data.access);
       setUsername(decodedToken.username);
-      
+  
       setSuccessMessage("Login successful! Redirecting...");
       setOpenMessage(true);
-      setsubmitBlock(false)
       setTimeout(() => navigate("/"), 1000); // Redirect after 1.5 seconds
     } catch (err) {
       console.error("Login error:", err);
-      setError("Invalid credentials. Please try again.");
+      // Check if error response exists and has a message
+      if (err.response && err.response.data) {
+        setError(err.response.data.detail || "Invalid credentials. Please try again.");
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
       setOpenMessage(true);
-      setsubmitBlock(false)
-
+    } finally {
+      setsubmitBlock(false);
     }
   };
-
+  
   const handleCloseMessage = () => {
     setOpenMessage(false);
   };
@@ -106,9 +112,16 @@ const LoginPageForm = () => {
           />
         </FormControl>
 
-        <Button disabled={submitBlock} type="submit" variant="contained" color="primary">
-          Login
-        </Button>
+        <Button
+  disabled={submitBlock}
+  type="submit"
+  variant="contained"
+  color="primary"
+  startIcon={submitBlock ? <CircularProgress size={20} /> : null}
+>
+  Login
+</Button>
+
       </Box>
 
       {/* Success message */}

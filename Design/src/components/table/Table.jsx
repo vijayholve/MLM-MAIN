@@ -13,7 +13,6 @@ import { UserContext } from "../../App";
 
 export default function MainTable() {
   const {baseURL} =useContext(UserContext)
-  // const baseURL = "http://127.0.0.1:8000"; // Base URL for media files
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [Data, setData] = useState([]);

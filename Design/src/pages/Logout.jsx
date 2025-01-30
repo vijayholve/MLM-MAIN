@@ -4,30 +4,55 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const LogoutComponent = () => {
-  const { setUsername } = useContext(UserContext); // Optional if you're clearing username context
-  const LOGOUT_URL = "http://127.0.0.1:8000/auth/logout/";
+  const { setUsername ,baseURL} = useContext(UserContext); // Optional if you're clearing username context
   const navigate = useNavigate();
-
+   
+ 
+  
   const handleLogout = async () => {
     try {
-
+      const accessToken = localStorage.getItem("access_token"); // Get access token
+      const refreshToken = localStorage.getItem("refresh_token"); // Get refresh token
+  
+      if (!accessToken) {
+        console.error("No access token found. User might not be logged in.");
+        return;
+      }
+  
+      if (!refreshToken) {
+        console.error("No refresh token found.");
+        return;
+      }
+  
+      console.log("Sending access token:", accessToken); // Debugging
+  
       const response = await axios.post(
-        'http://127.0.0.1:8000/auth/logout/',
-        {},
-        { withCredentials: true }
-    );
-            if (response.data.success) {
+        `${baseURL}/auth/logout/`,
+        { refresh_token: refreshToken }, // Send refresh token in request body
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`, // Send access token
+          },
+        }
+      );
+  
+      console.log("Response from backend:", response.data);
+  
+      if (response.data.success) {
         console.log("Logout successful");
-        setUsername(null); // Clear user context if needed
-        navigate("/login"); // Redirect to login page
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        navigate("/login");
       } else {
-        console.error("Logout failed");
+        console.error("Logout failed:", response.data);
       }
     } catch (error) {
-      console.error("Error during logout:", error);
+      console.error("Error during logout:", error.response?.data || error.message);
     }
   };
-
+  
     return(
       <button
       onClick={handleLogout}

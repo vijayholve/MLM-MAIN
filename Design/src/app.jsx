@@ -67,7 +67,6 @@ const App = () => {
                   element={
                     <ProtectedPage>
                       <Navbar />
-
                       <Plans />
                     </ProtectedPage>
                   }
@@ -87,11 +86,11 @@ const App = () => {
                 <Route
                   path="/"
                   element={
-                    <ProtectedPage>
-                      <Navbar />
+                    <>
+                      {/* <Navbar /> */}
 
                       <Home />
-                    </ProtectedPage>
+                    </>
                   }
                 />
                 <Route
